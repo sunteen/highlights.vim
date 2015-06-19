@@ -32,7 +32,7 @@ let loaded_highlightmultiple = 1
 " highlight hl5 ctermfg=white ctermbg=blue guifg=black guibg=green
 let s:data_file = expand('<sfile>:p:r').'.csv'
 let s:loaded_data = 0
-function! LoadHighlights()
+function! s:LoadHighlights()
   if !s:loaded_data
     if filereadable(s:data_file)
       let names = ['hl', 'ctermfg=', 'ctermbg=', 'guifg=', 'guibg=']
@@ -50,8 +50,10 @@ function! LoadHighlights()
     if !s:loaded_data
       echo 'Error: Could not read highlight data from '.s:data_file
     endif
+    let s:loaded_data = 0
   endif
 endfunction
+command! LoadHighlights call <SID>LoadHighlights()
 
 " Return last visually selected text or '\<cword\>'.
 " what = 1 (selection), or 2 (cword), or 0 (guess if 1 or 2 is wanted).
@@ -76,7 +78,7 @@ endfunction
 " If pat is numeric, use current word or visual selection and
 " increase hlnum by count*10 (if count [1..9] is given).
 function! s:DoHighlight(hlnum, pat, decade)
-  call LoadHighlights()
+  call s:LoadHighlights()
   let hltotal = a:hlnum
   if 0 < a:decade && a:decade < 10
     let hltotal += a:decade * 10
@@ -130,9 +132,10 @@ endfunction
 function! s:MatchToggle()
   if exists('g:match_maps') && g:match_maps
     let g:match_maps = 0
-    for i in range(0, 9)
-      execute 'unmap <k'.i.'>'
+    for i in range(0, 31)
+      execute 'unmap <Leader>'.i.'h'
     endfor
+    unmap <Leader>00h
     nunmap <kMinus>
     nunmap <kPlus>
     nunmap <kMultiply>
@@ -142,13 +145,13 @@ function! s:MatchToggle()
     nunmap <Leader>N
   else
     let g:match_maps = 1
-    for i in range(1, 9)
+    for i in range(0, 31)
       " modify these lines if different map keys are desired, currently uses keypad numerics
-      execute 'vnoremap <silent> <k'.i.'> :<C-U>call <SID>DoHighlight('.i.', 1, v:count)<CR>'
-      execute 'nnoremap <silent> <k'.i.'> :<C-U>call <SID>DoHighlight('.i.', 2, v:count)<CR>'
+      execute 'vnoremap <silent> <Leader>'.i.'h :<C-U>call <SID>DoHighlight('.i.', 1, v:count)<CR>'
+      execute 'nnoremap <silent> <Leader>'.i.'h :<C-U>call <SID>DoHighlight('.i.', 2, v:count)<CR>'
     endfor
-    vnoremap <silent> <k0> :<C-U>call <SID>UndoHighlight(1)<CR>
-    nnoremap <silent> <k0> :<C-U>call <SID>UndoHighlight(2)<CR>
+    vnoremap <silent> <Leader>00h :<C-U>call <SID>UndoHighlight(1)<CR>
+    nnoremap <silent> <Leader>00h :<C-U>call <SID>UndoHighlight(2)<CR>
     nnoremap <silent> <kMinus> :call <SID>WindowMatches(0)<CR>
     nnoremap <silent> <kPlus> :call <SID>WindowMatches(1)<CR>
     nnoremap <silent> <kMultiply> :call <SID>WindowMatches(2)<CR>
@@ -164,7 +167,7 @@ nnoremap <silent> <Leader>m :call <SID>MatchToggle()<CR>
 
 " Remove and save current matches, or restore them.
 function! s:WindowMatches(action)
-  call LoadHighlights()
+  call s:LoadHighlights()
   if a:action == 1
     if exists('w:last_matches')
       call setmatches(w:last_matches)
@@ -219,7 +222,7 @@ command! -nargs=? -complete=custom,s:SavedNames Hsave call <SID>Hsave('<args>')
 
 " Restore current highlighting from a global variable.
 function! s:Hrestore(name)
-  call LoadHighlights()
+  call s:LoadHighlights()
   let sname = s:NameForSave(a:name)
   if !empty(sname)
     if exists('g:{sname}')
@@ -254,12 +257,13 @@ command! -nargs=* -complete=custom,s:MatchPatterns -range Hclear call <SID>Hclea
 
 " Create a scratch buffer with sample text, and apply all highlighting.
 function! s:Hsample()
-  call LoadHighlights()
+  call s:LoadHighlights()
   new
   setlocal buftype=nofile bufhidden=hide noswapfile
   let lines = []
   let items = []
-  for hl in filter(range(1, 99), 'v:val % 10 > 0')
+  "for hl in filter(range(1, 99), 'v:val % 10 > 0')
+  for hl in range(0, 99)
     if hlexists('hl'.hl)
       let sample = printf('Sample%2d', hl)
       call s:DoHighlight(hl, sample, 0)
@@ -267,14 +271,14 @@ function! s:Hsample()
       let sample = '        '
     endif
     call add(items, sample)
-    if len(items) >= 3
+    if len(items) >= 4
       call insert(lines, substitute(join(items), '\s\+$', '', ''))
       let items = []
     endif
   endfor
   call append(0, filter(lines, 'len(v:val) > 0'))
   $d
-  %s/\d3$/&\r/e
+  "%s/\d3$/&\r/e
 endfunction
 command! Hsample call <SID>Hsample()
 

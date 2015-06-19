@@ -1,28 +1,33 @@
 hlnum,ctermfg,ctermbg,guifg,guibg
-1,red,,red,
-2,green,,green,
-3,blue,,blue,
-4,black,magenta,black,IndianRed
-5,black,green,black,chartreuse
-6,black,cyan,black,DeepSkyBlue
-7,white,DarkRed,white,firebrick
-8,white,DarkGreen,white,DarkGreen
-9,white,DarkBlue,white,DarkSlateBlue
-11,,,black,thistle
-12,,,black,burlywood
-13,,,black,PowderBlue
-14,,,black,peru
-15,,,black,DarkSeaGreen
-16,,,black,SteelBlue
-17,,,black,DarkOrange
-18,,,black,DarkOliveGreen
-19,,,black,SlateGray
-21,,,red,grey20
-22,,,green,grey20
-23,,,CornflowerBlue,grey20
-24,,,red,grey40
-25,,,green,grey40
-26,,,blue,grey40
-27,,,red,grey70
-28,,,DarkGreen,grey70
-29,,,blue,grey70
+ 0,,,black,firebrick1
+ 1,,,black,LimeGreen
+ 2,,,black,DeepSkyBlue
+ 3,,,black,yellow
+ 4,,,black,IndianRed
+ 5,,,black,SpringGreen1
+ 6,,,black,CornflowerBlue
+ 7,,,black,gold
+ 8,,,black,DeepPink
+ 9,,,black,chartreuse
+10,,,black,cyan
+11,,,black,orange
+12,,,black,LightPink
+13,,,black,DarkSeaGreen1
+14,,,black,DarkSlateGray1
+15,,,black,burlywood1
+16,,,white,IndianRed
+17,,,white,chartreuse4
+18,,,white,SlateBlue4
+19,,,white,DarkOrange
+20,,,white,OrangeRed3
+21,,,white,OliveDrab
+22,,,white,SteelBlue
+23,,,white,goldenrod
+24,,,white,IndianRed4
+25,,,white,DarkGreen
+26,,,white,blue4
+27,,,white,tan4
+28,,,white,DeepPink
+29,,,white,PaleGreen4
+30,,,white,DodgerBlue4
+31,,,white,tan3
