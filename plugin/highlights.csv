@@ -1,14 +1,14 @@
 hlnum,ctermfg,ctermbg,guifg,guibg
- 0,,,black,firebrick1
- 1,,,black,LimeGreen
- 2,,,black,DeepSkyBlue
- 3,,,black,yellow
- 4,,,black,IndianRed
- 5,,,black,SpringGreen1
- 6,,,black,CornflowerBlue
- 7,,,black,gold
- 8,,,black,DeepPink
- 9,,,black,chartreuse
+0,,,black,firebrick1
+1,,,black,LimeGreen
+2,,,black,DeepSkyBlue
+3,,,black,yellow
+4,,,black,IndianRed
+5,,,black,SpringGreen1
+6,,,black,CornflowerBlue
+7,,,black,gold
+8,,,black,DeepPink
+9,,,black,chartreuse
 10,,,black,cyan
 11,,,black,orange
 12,,,black,LightPink
