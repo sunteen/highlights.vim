@@ -293,7 +293,8 @@ function! s:Highlight(args) range
     endfor
     return
   endif
-  let l = matchlist(a:args, '^\s*\([1-9][0-9]\?\)\%($\|\s\+\(.*\)\)')
+  "let l = matchlist(a:args, '^\s*\([1-9][0-9]\?\)\%($\|\s\+\(.*\)\)')
+  let l = matchlist(a:args, '^\s*\([0-9][0-9]\?\)\%($\|\s\+\(.*\)\)')
   if len(l) >= 3
     let hlnum = str2nr(l[1])
     let pattern = l[2]
