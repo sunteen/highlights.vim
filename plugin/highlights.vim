@@ -61,7 +61,10 @@ function! s:Pattern(what)
   if a:what == 2 || (a:what == 0 && histget(':', -1) =~# '^H')
     let result = expand("<cword>")
     if !empty(result)
-      let result = '\<'.result.'\>'
+      "// Case insensitive
+      let result = '\<\C'.result.'\>'
+      "// Case sensitive
+      "let result = '\<'.result.'\>'
     endif
   else
     let old_reg = getreg('"')
@@ -71,24 +74,25 @@ function! s:Pattern(what)
     normal! gV
     call setreg('"', old_reg, old_regtype)
   endif
+  echo 'what = '.a.what.'; result = '.result
   return result
 endfunction
 
 " Remove any highlighting for hlnum then highlight pattern (if not empty).
 " If pat is numeric, use current word or visual selection and
-" increase hlnum by count*10 (if count [1..9] is given).
+" increase hlnum by count*32 (if count [1..32] is given).
 function! s:DoHighlight(hlnum, pat, decade)
   call s:LoadHighlights()
   let hltotal = a:hlnum
-  if 0 < a:decade && a:decade < 10
-    let hltotal += a:decade * 10
+  if 0 < a:decade && a:decade < 32
+    let hltotal += a:decade * 32
   endif
   if type(a:pat) == type(0)
     let pattern = s:Pattern(a:pat)
   else
     let pattern = a:pat
   endif
-  let id = hltotal + 100
+  let id = hltotal + 120
   silent! call matchdelete(id)
   if !empty(pattern)
     try
@@ -132,20 +136,20 @@ endfunction
 function! s:MatchToggle()
   if exists('g:match_maps') && g:match_maps
     let g:match_maps = 0
-    for i in range(0, 31)
+    for i in range(0, 127)
       execute 'unmap <Leader>'.i.'h'
     endfor
     unmap <Leader>00h
     nunmap <kMinus>
     nunmap <kPlus>
     nunmap <kMultiply>
-    nunmap <Leader>f
-    nunmap <Leader>F
-    nunmap <Leader>n
-    nunmap <Leader>N
+    "nunmap <Leader>f
+    "nunmap <Leader>F
+    "nunmap <Leader>n
+    "nunmap <Leader>N
   else
     let g:match_maps = 1
-    for i in range(0, 31)
+    for i in range(0, 127)
       " modify these lines if different map keys are desired, currently uses keypad numerics
       execute 'vnoremap <silent> <Leader>'.i.'h :<C-U>call <SID>DoHighlight('.i.', 1, v:count)<CR>'
       execute 'nnoremap <silent> <Leader>'.i.'h :<C-U>call <SID>DoHighlight('.i.', 2, v:count)<CR>'
@@ -155,10 +159,10 @@ function! s:MatchToggle()
     nnoremap <silent> <kMinus> :call <SID>WindowMatches(0)<CR>
     nnoremap <silent> <kPlus> :call <SID>WindowMatches(1)<CR>
     nnoremap <silent> <kMultiply> :call <SID>WindowMatches(2)<CR>
-    nnoremap <silent> <Leader>f :call <SID>Search(0)<CR>
-    nnoremap <silent> <Leader>F :call <SID>Search(1)<CR>
-    nnoremap <silent> <Leader>n :let @/=<SID>Search(0)<CR>
-    nnoremap <silent> <Leader>N :let @/=<SID>Search(1)<CR>
+    "nnoremap <silent> <Leader>f :call <SID>Search(0)<CR>
+    "nnoremap <silent> <Leader>F :call <SID>Search(1)<CR>
+    "nnoremap <silent> <Leader>n :let @/=<SID>Search(0)<CR>
+    "nnoremap <silent> <Leader>N :let @/=<SID>Search(1)<CR>
   endif
   call s:WindowMatches(g:match_maps)
   echo 'Mappings for matching:' g:match_maps ? 'ON' : 'off'
@@ -258,7 +262,9 @@ command! -nargs=* -complete=custom,s:MatchPatterns -range Hclear call <SID>Hclea
 " Create a scratch buffer with sample text, and apply all highlighting.
 function! s:Hsample()
   call s:LoadHighlights()
-  new
+  "new
+  set splitright
+  vnew
   setlocal buftype=nofile bufhidden=hide noswapfile
   let lines = []
   let items = []
