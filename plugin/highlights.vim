@@ -74,7 +74,7 @@ function! s:Pattern(what)
     normal! gV
     call setreg('"', old_reg, old_regtype)
   endif
-  echo 'what = '.a.what.'; result = '.result
+  echo 'what = '.a:what.'; result = '.result
   return result
 endfunction
 
@@ -167,7 +167,7 @@ function! s:MatchToggle()
   call s:WindowMatches(g:match_maps)
   echo 'Mappings for matching:' g:match_maps ? 'ON' : 'off'
 endfunction
-nnoremap <silent> <Leader>m :call <SID>MatchToggle()<CR>
+nnoremap <silent> <Leader>h :call <SID>MatchToggle()<CR>
 
 " Remove and save current matches, or restore them.
 function! s:WindowMatches(action)
