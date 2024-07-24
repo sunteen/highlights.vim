@@ -1,3 +1,6 @@
-Script found on http://vim.wikia.com/wiki/Highlight_multiple_words, but not available as plugin from vim-scripts for some reason.
+This repo intends to implement the scripts located at http://vim.wikia.com/wiki/Highlight_multiple_words.
+The original scripts are not available as plugin from vim-scripts or vundle.
+
+Some modifications were made for personal interests.
 
 
